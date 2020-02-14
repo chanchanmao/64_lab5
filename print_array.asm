@@ -14,19 +14,15 @@
 
 .text
 printA:
-	la $t1, len # get address of array length
-	lw $t2, 0($t1) # store value of array length
+	bge $t0, $t1, exit # if !(x < array length) = if (x >= array length)
 
-	bge $t0, $t2, exit # if !(x < array length) = if (x >= array length)
-
-	la $t4, arr # get base of array
-	sll $t5, $t0, 2
-	add $t6, $t5, $t4
-	lw $t7, 0($t6)
+	sll $t3, $t0, 2
+	add $t4, $t3, $t2
+	lw $t5, 0($t4)
 
 	# print element at current index
 	li $v0, 1
-	move $a0, $t7
+	move $a0, $t5
 	syscall
 	li $v0, 4
 	la $a0, newline
@@ -38,6 +34,9 @@ printA:
 
 main:
 	li $t0, 0 # index
+	la $t3, len
+	lw $t1, 0($t3)
+	la $t2, arr
 
 	# print
 	li $v0, 4

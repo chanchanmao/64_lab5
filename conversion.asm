@@ -30,6 +30,8 @@ loop_for:
 
 	addi $t0, $t0, -1
 
+	j loop_for
+
 loop_if:
 	li $t2, 3 # compare with this value
 	bge $a0, 3, if

@@ -19,7 +19,7 @@ routineB:
 
     addi $s0, $s1, -1 # routineB(s1-1)
 
-    sub $s0, $s0, 5 # (r-5), r = s0
+    addi $s0, $s0, -5 # (r-5), r = s0
     sll $s0, $s0, 2 # (5-r)*4
 
     move $v0, $s0 # return value

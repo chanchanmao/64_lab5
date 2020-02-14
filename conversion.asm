@@ -5,12 +5,8 @@
 #   make all arguments to any function go in $a0 and/or $a1
 #   make all returned values from functions go in $v0
 
-.data
-	nl: .asciiz "\n"
-
 .text
 conv:
-    # TODO: Write your function code here
 	addiu $sp, $sp, -4 # save return address
 	sw $ra, 0($sp)
 
@@ -54,7 +50,6 @@ end_if:
 	j loop # restart loop
 
 main:
-	# TODO: Write your main function code here
 	li $a0, 5 # a
 	li $a1, 7 # b
 	jal conv
@@ -63,7 +58,7 @@ main:
 	move $a0, $v0 # c
 	li $v0, 1
 	syscall
-	
+
 exit:
 	li $v0, 10
 	syscall

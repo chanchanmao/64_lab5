@@ -18,11 +18,15 @@ printA:
 	sw $ra, 0($sp)
 
 	li $s0, 0 # index
+	la $s1, len
+	lw $a1, 0($s1)
 
 	j print
 
 print:
 	bge $s0, $a1, end # if !(x < array length) = if (x >= array length)
+
+	la $a2, arr
 
 	sll $s1, $s0, 2
 	add $t4, $s1, $a2
@@ -47,10 +51,6 @@ end:
 	jr $ra
 
 main:
-	la $s1, len
-	lw $a1, 0($s1)
-	la $a2, arr
-
 	# print
 	li $v0, 4
 	la $a0, content

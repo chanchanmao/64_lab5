@@ -24,16 +24,16 @@ routineA:
     sll $t0, $a1, 1 # 2*y
     add $a1, $a1, $t0, # 2*y + y = 3*y
 
-    jal routineB
+    jal routineB # routineB(3*y)
 
     lw $a1, 0($sp)
-    add $s1, $s1, $v0
-    addi $a1, $s1, -1
+    add $s1, $s1, $v0 # s1 = 2*x + routineB(3*y)
+    addi $a1, $s1, -1 # s1 - 1
 
     addiu $sp, $sp, -4
     sw $v0, 0($sp)
 
-    jal routineB
+    jal routineB # routineB(s1-1)
 
     lw $ra, 12($sp)
     addiu $sp, $sp, 16
@@ -45,11 +45,12 @@ main:
     li $a1, 7 # b
     jal routineA
 
-exit:
     # print
     move $a0, $v0
     li $v0, 1
     syscall
+
+exit:
 
     li $v0, 10
     syscall

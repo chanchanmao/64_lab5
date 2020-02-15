@@ -7,35 +7,43 @@
 
 .text
 routineB:
-    sll $s1, $s1, 1 # 2*x
+    sub $t0, $a1, 5
+    sll $t0, $t0, 2
 
-    sll $t0, $s2, 1 # 2*y
-    add $s3, $t0, $s2 # 2*y + y = 3*y
-
-    sub $s3, $s3, 5 # (r-5), r = 3y
-    sll $s3, $s3, 2 # (r-5)*4
-
-    add $s1, $s1, $s3 # 2*x + routineB(3*y)
-
-    addi $s0, $s1, -1 # routineB(s1-1)
-
-    addi $s0, $s0, -5 # (r-5), r = s0
-    sll $s0, $s0, 2 # (5-r)*4
-
-    move $v0, $s0 # return value
-
-    j exit
+    move $v0, $t0
+    jr $ra
 
 routineA:
-    move $s1, $a0 # x
-    move $s2, $a1 # y
+    addiu $sp, $sp, -12
+    sw $ra, 8($sp)
+    sw $a0, 4($sp)
+    sw $a1, 0($sp)
 
-    j routineB
+    sll $s1, $a0, 1 # 2*x
+
+    sll $t0, $a1, 1 # 2*y
+    add $a1, $a1, $t0, # 2*y + y = 3*y
+
+    jal routineB
+
+    lw $a1, 0($sp)
+    add $s1, $s1, $v0
+    addi $a1, $s1, -1
+
+    addiu $sp, $sp, -4
+    sw $v0, 0($sp)
+
+    jal routineB
+
+    lw $ra, 12($sp)
+    addiu $sp, $sp, 16
+
+    jr $ra
 
 main:
     li $a0, 5 # a
     li $a1, 7 # b
-    j routineA
+    jal routineA
 
 exit:
     # print

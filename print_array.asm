@@ -14,10 +14,13 @@
 
 .text
 printA:
-	bge $t0, $a1, exit # if !(x < array length) = if (x >= array length)
+	addiu $sp, $sp, -4
+	sw $ra, 0($sp)
 
-	sll $t3, $t0, 2
-	add $t4, $t3, $a2
+	bge $s0, $a1, end # if !(x < array length) = if (x >= array length)
+
+	sll $s1, $s0, 2
+	add $t4, $s1, $a2
 	lw $t5, 0($t4)
 
 	# print element at current index
@@ -28,20 +31,20 @@ printA:
 	la $a0, newline
 	syscall
 
-	addi $t0, $t0, 1 # increment index
+	addi $s0, $s0, 1 # increment index
 
 	j printA # restart loop
 
+end:
+	sw $ra, 0($sp)
+	addiu $sp, $sp, 4
+	
+	jr $ra
+
 main:
-# So printA function should only accept 2 parameters, which are
-
-#1. the address of the array in $a0
-
-#2. the length of the array in $a1
-
-	li $t0, 0 # index
-	la $t3, len
-	lw $a1, 0($t3)
+	li $s0, 0 # index
+	la $s1, len
+	lw $a1, 0($s1)
 	la $a2, arr
 
 	# print

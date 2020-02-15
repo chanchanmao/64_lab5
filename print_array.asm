@@ -24,6 +24,7 @@ for:
 	li $v0, 1
 	lw $a0, 0($s0)
 	syscall
+	
 	li $v0, 4
 	la $a0, newline
 	syscall

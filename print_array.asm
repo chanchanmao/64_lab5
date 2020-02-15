@@ -14,48 +14,39 @@
 
 .text
 printA:
-	addiu $sp, $sp, -4
-	sw $ra, 0($sp)
+	li $t0, 0 # index
+	la $s0, arr # get base of array
 
-	la $s1, len # address of array length
-	lw $a1, 0($s1) # value array length
-
-	bge $a2, $a1, exit # if !(x < array length) = if (x >= array length)
-
-	la $a0, arr # get base of array
-
-	sll $s2, $a2, 2
-	add $s3, $s2, $a0
-	lw $s4, 0($s3)
+for:
+	bge $t0, $a1, end # if !(x < array length) = if (x >= array length)
 
 	# print element at current index
 	li $v0, 1
-	move $a0, $s4
+	lw $a0, 0($s0)
 	syscall
 	li $v0, 4
 	la $a0, newline
 	syscall
 
-	addi $a2, $a2, 1 # increment index
+	addiu $s0, $s0, 4
+	addiu $t0, $t0, 1 # increment index
 
-	sw $ra, 0($sp)
-	addiu $sp, $sp, 4
+	j for # restart for loop
 
-	j printA # restart loop
-
-#end:
-#	sw $ra, 0($sp)
-#	addiu $sp, $sp, 4
-	
+end:
 	jr $ra
 
 main:
-	li $a2, 0 # index
+	la $s1, len # address of array length
+	lw $a1, 0($s1) # value array length
 
 	# print
 	li $v0, 4
 	la $a0, content
 	syscall
+
+	addiu $sp, $sp, -4
+	sw $ra, 0($sp)
 
 	jal printA
 

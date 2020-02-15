@@ -20,11 +20,11 @@ printA:
 	la $s1, len # address of array length
 	lw $a1, 0($s1) # value array length
 
-	bge $s0, $a1, end # if !(x < array length) = if (x >= array length)
+	bge $a2, $a1, end # if !(x < array length) = if (x >= array length)
 
 	la $a0, arr # get base of array
 
-	sll $s2, $s0, 2
+	sll $s2, $a2, 2
 	add $s3, $s2, $a0
 	lw $s4, 0($s3)
 
@@ -36,7 +36,7 @@ printA:
 	la $a0, newline
 	syscall
 
-	addi $s0, $s0, 1 # increment index
+	addi $a2, $a2, 1 # increment index
 
 	j printA # restart loop
 
@@ -47,7 +47,7 @@ end:
 	jr $ra
 
 main:
-	li $s0, 0 # index
+	li $a2, 0 # index
 
 	# print
 	li $v0, 4

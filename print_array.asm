@@ -56,7 +56,7 @@ main:
 	la $a0, content
 	syscall
 
-	j printA
+	jal printA
 
 exit:
 	li $v0, 10

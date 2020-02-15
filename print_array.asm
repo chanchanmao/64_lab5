@@ -20,7 +20,7 @@ printA:
 	la $s1, len # address of array length
 	lw $a1, 0($s1) # value array length
 
-	bge $a2, $a1, end # if !(x < array length) = if (x >= array length)
+	bge $a2, $a1, exit # if !(x < array length) = if (x >= array length)
 
 	la $a0, arr # get base of array
 
@@ -38,11 +38,14 @@ printA:
 
 	addi $a2, $a2, 1 # increment index
 
-	j printA # restart loop
-
-end:
 	sw $ra, 0($sp)
 	addiu $sp, $sp, 4
+
+	j printA # restart loop
+
+#end:
+#	sw $ra, 0($sp)
+#	addiu $sp, $sp, 4
 	
 	jr $ra
 

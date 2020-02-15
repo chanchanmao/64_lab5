@@ -17,24 +17,20 @@ printA:
 	addiu $sp, $sp, -4
 	sw $ra, 0($sp)
 
-	li $s0, 0 # index
-	la $s1, len
-	lw $a1, 0($s1)
+	la $s1, len # address of array length
+	lw $a1, 0($s1) # value array length
 
-	j print
-
-print:
 	bge $s0, $a1, end # if !(x < array length) = if (x >= array length)
 
-	la $a2, arr
+	la $a0, arr # get base of array
 
-	sll $s1, $s0, 2
-	add $t4, $s1, $a2
-	lw $t5, 0($t4)
+	sll $s2, $s0, 2
+	add $s3, $s2, $a0
+	lw $s4, 0($s3)
 
 	# print element at current index
 	li $v0, 1
-	move $a0, $t5
+	move $a0, $s4
 	syscall
 	li $v0, 4
 	la $a0, newline
@@ -42,7 +38,7 @@ print:
 
 	addi $s0, $s0, 1 # increment index
 
-	j print # restart loop
+	j printA # restart loop
 
 end:
 	sw $ra, 0($sp)
@@ -51,6 +47,8 @@ end:
 	jr $ra
 
 main:
+	li $s0, 0 # index
+
 	# print
 	li $v0, 4
 	la $a0, content

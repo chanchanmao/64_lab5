@@ -17,6 +17,11 @@ printA:
 	addiu $sp, $sp, -4
 	sw $ra, 0($sp)
 
+	li $s0, 0 # index
+
+	j print
+
+print:
 	bge $s0, $a1, end # if !(x < array length) = if (x >= array length)
 
 	sll $s1, $s0, 2
@@ -33,7 +38,7 @@ printA:
 
 	addi $s0, $s0, 1 # increment index
 
-	j printA # restart loop
+	j print # restart loop
 
 end:
 	sw $ra, 0($sp)
@@ -42,7 +47,6 @@ end:
 	jr $ra
 
 main:
-	li $s0, 0 # index
 	la $s1, len
 	lw $a1, 0($s1)
 	la $a2, arr
